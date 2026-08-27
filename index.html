@@ -112,6 +112,7 @@ body{
 }
 button,input,select,textarea{font:inherit;color:inherit;}
 button{background:none;border:none;padding:0;cursor:pointer;}
+body.body-lock{position:fixed;left:0;right:0;overflow:hidden;}
 :focus-visible{outline:2px solid var(--fg);outline-offset:2px;border-radius:4px;}
 ::selection{background:var(--surface-3);}
 
@@ -298,7 +299,9 @@ button{background:none;border:none;padding:0;cursor:pointer;}
   border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:var(--shadow-lg);
   padding:12px 18px calc(env(safe-area-inset-bottom) + 24px);
   transform:translateY(102%);transition:transform .34s cubic-bezier(.2,.85,.25,1);
+  touch-action:pan-y;overscroll-behavior-y:contain;
 }
+.sheet-bg{touch-action:none;}
 .sheet.on{transform:none;}
 .grip{width:34px;height:4px;border-radius:99px;background:var(--line-2);margin:0 auto 18px;}
 .sheet h3{font-size:20px;font-weight:600;letter-spacing:-.03em;margin:0 0 20px;}
@@ -1405,8 +1408,25 @@ document.addEventListener('visibilitychange', ()=>{ if(!document.hidden){ checkR
    ========================================================== */
 const sheet = $('#sheet'), sheetBg = $('#sheetBg');
 let draft = null, iconCat = 'all';
+let lockedScrollY = 0;
 
-function closeSheet(){ sheet.classList.remove('on'); sheetBg.classList.remove('on'); setTimeout(()=>{ if(!sheet.classList.contains('on')) sheet.innerHTML=''; }, 380); }
+function lockBody(){
+  lockedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+  document.body.style.top = (-lockedScrollY) + 'px';
+  document.body.classList.add('body-lock');
+}
+function unlockBody(){
+  document.body.classList.remove('body-lock');
+  document.body.style.top = '';
+  window.scrollTo(0, lockedScrollY);
+}
+
+function closeSheet(){
+  if(document.activeElement && sheet.contains(document.activeElement)) document.activeElement.blur();
+  sheet.classList.remove('on'); sheetBg.classList.remove('on');
+  unlockBody();
+  setTimeout(()=>{ if(!sheet.classList.contains('on')) sheet.innerHTML=''; }, 380);
+}
 sheetBg.addEventListener('click', closeSheet);
 
 function openEditor(r){
@@ -1415,6 +1435,7 @@ function openEditor(r){
   iconCat = 'all';
   sheet.innerHTML = editorHTML(isNew);
   sheet.scrollTop = 0;
+  lockBody();
   sheetBg.classList.add('on');
   requestAnimationFrame(()=> sheet.classList.add('on'));
   bindEditor(isNew);
