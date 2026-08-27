@@ -1,7 +1,7 @@
 /* Repeat — service worker
    Cache-first pro vlastní soubory, takže appka běží i offline.
    Verzi zvyš, kdykoli nahraješ novou verzi appky. */
-const VERSION = 'repeat-v3';
+const VERSION = 'repeat-v4';
 const ASSETS = [
   './',
   'index.html',
