@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="description" content="Deník denních rutin se sériemi, statistikami a připomínkami.">
 <title>Repeat</title>
 <style>
@@ -97,11 +97,18 @@
 }
 
 *{box-sizing:border-box;}
-html{-webkit-text-size-adjust:100%;}
+html{
+  -webkit-text-size-adjust:100%;
+  overflow-x:hidden;
+  touch-action:pan-y;
+  overscroll-behavior-y:contain;
+}
 body{
   margin:0;background:var(--bg);color:var(--fg);
   font-family:var(--f-ui);font-size:15.5px;line-height:1.5;letter-spacing:-.005em;
   -webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden;
+  touch-action:pan-y;
+  overscroll-behavior-y:contain;
 }
 button,input,select,textarea{font:inherit;color:inherit;}
 button{background:none;border:none;padding:0;cursor:pointer;}
@@ -227,7 +234,7 @@ button{background:none;border:none;padding:0;cursor:pointer;}
 .mood.on svg{color:var(--bg);}
 .journal textarea{
   width:100%;min-height:74px;resize:none;background:transparent;border:none;padding:0;
-  font-size:14.5px;line-height:1.55;color:var(--fg);
+  font-size:16px;line-height:1.55;color:var(--fg);
 }
 .journal textarea:focus{outline:none;}
 .journal textarea::placeholder{color:var(--fg-4);}
@@ -299,7 +306,7 @@ button{background:none;border:none;padding:0;cursor:pointer;}
 .field > .label{display:block;margin-bottom:8px;}
 .input{
   width:100%;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-sm);
-  padding:11px 12px;font-size:15px;color:var(--fg);
+  padding:11px 12px;font-size:16px;color:var(--fg);
 }
 .input::placeholder{color:var(--fg-4);}
 .input:focus{outline:none;border-color:var(--fg-3);}
